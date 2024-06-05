@@ -1,0 +1,60 @@
+# ---------------------------------------------------------> The Base image
+FROM node:18.18.2-alpine3.18 AS Base
+
+# set the working directory
+WORKDIR /app
+
+# copy package management files
+COPY package.json yarn.lock* package-lock.json* ./
+
+# install packages
+RUN yarn install --frozen-lockfile --production=true
+
+# ---------------------------------------------------------> The Build image
+FROM node:18.18.2-alpine3.18 AS Builder
+
+# set node environment to production
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    HOST=0.0.0.0 \
+    PORT=3000
+
+# set the working directory
+WORKDIR /app
+
+# copy app files
+COPY . .
+
+# copy files from Base image
+COPY --from=Base /app/node_modules ./node_modules
+
+# build the application
+RUN yarn build
+
+# ---------------------------------------------------------> The Running image
+FROM node:18.18.2-alpine3.18 AS Runner
+
+# set node environment to production
+ENV NODE_ENV=production \
+    NEXT_TELEMETRY_DISABLED=1 \
+    HOST=0.0.0.0 \
+    PORT=3000
+
+# setup the user and user permissions
+RUN addgroup --gid 1001 --system nodejs \
+    && adduser --system keystonejs --uid 1001
+
+# copy files changing ownership
+COPY --chown=keystonejs:nodejs --from=Builder /app /app
+
+# set the working directory
+WORKDIR /app
+
+# set the user
+USER keystonejs
+
+# configure the ports
+EXPOSE 3000
+
+# setup the entry point that will run the built application
+ENTRYPOINT ["yarn", "start"]

@@ -1,0 +1,6 @@
+# Ignore artifacts:
+package-lock.json
+yarn.lock
+.next
+build
+coverage

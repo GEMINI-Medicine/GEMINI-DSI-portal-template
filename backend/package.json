@@ -1,0 +1,57 @@
+{
+  "name": "backend",
+  "description": "CMS Keystone backend API server",
+  "version": "1.0.0",
+  "private": true,
+  "repository": "https://github.com/GEMINI-Medicine/GEMINI-DSI-portal-template",
+  "scripts": {
+    "build": "keystone build",
+    "migrate": "keystone prisma migrate deploy",
+    "dev": "keystone dev",
+    "generate": "keystone prisma migrate dev",
+    "start": "keystone start --with-migrations",
+    "seed-data": "tsx ./seed-data/seed-data.ts",
+    "reset": "keystone prisma db push --force-reset"
+  },
+  "eslintConfig": {
+    "extends": [
+      "wesbos/typescript"
+    ],
+    "rules": {
+      "react/jsx-props-no-spreading": 0
+    }
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "3.540.0",
+    "@keystone-6/auth": "7.0.2",
+    "@keystone-6/core": "5.7.2",
+    "@keystone-6/fields-document": "8.0.2",
+    "@tanstack/react-table": "8.15.0",
+    "@types/node": "20.11.30",
+    "@types/nodemailer": "6.4.14",
+    "dotenv": "16.4.5",
+    "eslint": "8.57.0",
+    "nodemailer": "6.9.13",
+    "papaparse": "5.4.1",
+    "typescript": "5.4.3"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "7.4.0",
+    "@typescript-eslint/parser": "7.4.0",
+    "babel-eslint": "10.1.0",
+    "eslint-config-airbnb": "19.0.4",
+    "eslint-config-airbnb-typescript": "18.0.0",
+    "eslint-config-next": "14.1.4",
+    "eslint-config-prettier": "9.1.0",
+    "eslint-config-wesbos": "4.0.1",
+    "eslint-plugin-html": "8.0.0",
+    "eslint-plugin-import": "2.29.1",
+    "eslint-plugin-jsx-a11y": "6.8.0",
+    "eslint-plugin-prettier": "5.1.3",
+    "eslint-plugin-react": "7.34.1",
+    "eslint-plugin-react-hooks": "4.6.0",
+    "npm-check-updates": "16.14.18",
+    "prettier": "3.2.5",
+    "tsx": "4.7.1"
+  }
+}
